@@ -14,7 +14,7 @@ public class gaming {
         
         String opponentChoice = null;
         String yourChoice = null;
-        int player;
+        double player;
         
         for (int i = 0; i < 1000000; i++){ //the user can play continuosly up to one million times (basically forever)
             int random = (int) (Math.random() * 3) + 1; //for the computer to choose rock or paper or scissors (computers start at zero as one, so + 1)
@@ -30,17 +30,18 @@ public class gaming {
                  opponentChoice = "scissors";
             }
            
-            player = scan.nextInt(); //player input
+            player = scan.nextDouble(); //player input
             if (player == 1){
                 yourChoice = "rock";
             }
-            if (player == 2){
+            else if (player == 2){
                 yourChoice = "paper";
             }
-            if (player == 3){
+            else if (player == 3){
                 yourChoice = "scissors";
             }
-            if (player > 3 || player < 0){ //handles invalid input (doesnt handle decimals or strings)
+            
+            else { //handles invalid input (doesnt handle strings)
                 System.out.println("Invalid input");
                 roundCount--;
             }
