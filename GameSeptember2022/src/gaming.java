@@ -29,8 +29,19 @@ public class gaming {
             if (random == 3){
                  opponentChoice = "scissors";
             }
-           
-            player = scan.nextDouble(); //player input
+            
+            while (true) {
+            try {
+                player = scan.nextDouble(); //player input
+                break; //to prevent doing catch forever
+            } 
+            catch (Exception wordError) {
+                scan.next();
+                System.out.println("Invalid input, you are not supposed to input letters!");  //can handle errors with strings
+                System.out.println("Try again!");
+            }
+            
+            }
             if (player == 1){
                 yourChoice = "rock";
             }
@@ -41,16 +52,16 @@ public class gaming {
                 yourChoice = "scissors";
             }
             
-            else { //handles invalid input (doesnt handle strings)
-                System.out.println("Invalid input");
-                roundCount--;
-            }
-            
-            if (player == 0){ //if player wants to stop playing
+            else if (player == 0){ //if player wants to stop playing
                 System.out.println("Thanks for playing");
                 break; //ends loop
             }
 
+            else { //handles invalid input (this one doesnt handle strings)
+                System.out.println("Invalid input");
+                roundCount--;
+            }
+            
             if (player == random){
                 System.out.println("Draw!");
                 draws++;
@@ -62,17 +73,22 @@ public class gaming {
                 System.out.println("You win!");
                 wins++;
                 System.out.println("You choose:" +  yourChoice + "\t Opponent chooses:" + opponentChoice);
-                System.out.println("Wins:" + wins + "\t Losses:" + losses + "\t Draws:" + draws); 
+                System.out.println("Wins:" + wins + "\t Losses:" + losses + "\t Draws:" + draws);
+                winStreak++;
             }
             if (player == 3 && random == 1 || player == 1 && random == 2 || player == 2 && random == 3){
                 System.out.println("You lose!");
                 losses++;
                 System.out.println("You choose:" +  yourChoice + "\t Opponent chooses:" + opponentChoice);
-                System.out.println("Wins:" + wins + "\t Losses:" + losses + "\t Draws:" + draws); 
+                System.out.println("Wins:" + wins + "\t Losses:" + losses + "\t Draws:" + draws);
+                winStreak = 0;
             }
-            
+            if (winStreak > 2){
+                System.out.println("Winstreak!:" + winStreak);
+            }
+
             roundCount++;
-            System.out.println("-------------------------------------------");
+            System.out.println("-----✊🏻✋🏻✌️-------✊🏻✋🏻✌️----------✊🏻✋🏻✌️------✊🏻✋🏻✌️");
 
         }
         
