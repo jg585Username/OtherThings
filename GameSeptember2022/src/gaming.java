@@ -14,7 +14,7 @@ public class gaming {
         
         String opponentChoice = null;
         String yourChoice = null;
-        int player;
+        double player;
         
         for (int i = 0; i < 1000000; i++){ //the user can play continuosly up to one million times (basically forever)
             int random = (int) (Math.random() * 3) + 1; //for the computer to choose rock or paper or scissors (computers start at zero as one, so + 1)
@@ -29,27 +29,39 @@ public class gaming {
             if (random == 3){
                  opponentChoice = "scissors";
             }
-           
-            player = scan.nextInt(); //player input
+            
+            while (true) {
+            try {
+                player = scan.nextDouble(); //player input
+                break; //to prevent doing catch forever
+            } 
+            catch (Exception wordError) {
+                scan.next();
+                System.out.println("Invalid input, you are not supposed to input letters!");  //can handle errors with strings
+                System.out.println("Try again!");
+            }
+            
+            }
             if (player == 1){
                 yourChoice = "rock";
             }
-            if (player == 2){
+            else if (player == 2){
                 yourChoice = "paper";
             }
-            if (player == 3){
+            else if (player == 3){
                 yourChoice = "scissors";
             }
-            if (player > 3 || player < 0){ //handles invalid input (doesnt handle decimals or strings)
-                System.out.println("Invalid input");
-                roundCount--;
-            }
             
-            if (player == 0){ //if player wants to stop playing
+            else if (player == 0){ //if player wants to stop playing
                 System.out.println("Thanks for playing");
                 break; //ends loop
             }
 
+            else { //handles invalid input (this one doesnt handle strings)
+                System.out.println("Invalid input");
+                roundCount--;
+            }
+            
             if (player == random){
                 System.out.println("Draw!");
                 draws++;
@@ -61,17 +73,22 @@ public class gaming {
                 System.out.println("You win!");
                 wins++;
                 System.out.println("You choose:" +  yourChoice + "\t Opponent chooses:" + opponentChoice);
-                System.out.println("Wins:" + wins + "\t Losses:" + losses + "\t Draws:" + draws); 
+                System.out.println("Wins:" + wins + "\t Losses:" + losses + "\t Draws:" + draws);
+                winStreak++;
             }
             if (player == 3 && random == 1 || player == 1 && random == 2 || player == 2 && random == 3){
                 System.out.println("You lose!");
                 losses++;
                 System.out.println("You choose:" +  yourChoice + "\t Opponent chooses:" + opponentChoice);
-                System.out.println("Wins:" + wins + "\t Losses:" + losses + "\t Draws:" + draws); 
+                System.out.println("Wins:" + wins + "\t Losses:" + losses + "\t Draws:" + draws);
+                winStreak = 0;
             }
-            
+            if (winStreak > 2){
+                System.out.println("Winstreak!:" + winStreak);
+            }
+
             roundCount++;
-            System.out.println("-------------------------------------------");
+            System.out.println("-----✊🏻✋🏻✌️-------✊🏻✋🏻✌️----------✊🏻✋🏻✌️------✊🏻✋🏻✌️");
 
         }
         
