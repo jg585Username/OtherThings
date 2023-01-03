@@ -2,34 +2,48 @@
 import java.awt.Color;
 import java.awt.Graphics;
 
+//TODO
+//drawing does not appear instantly after hitting reset button
+//hitting reset before game finshes does not clear drawing for some reason
+//finsh draw() method
+
 
 public class wordGame extends javax.swing.JFrame {
     //private final WordManager wm;
     /**
      * Creates new form wordGame
      */
-    WordManager manager = new WordManager();
+    //WordManager manager = new WordManager(); parameter now required b/c commented out original method
     String guess = "";
-    String word = manager.getWord();
-    int correctGuesses = 0;
+    //String word = manager.getWord();
+    String word = "";
+    int guessCount = 0;
     String hidden = "";
+    WordManager wm; //wm = null
+    
     public wordGame() {
         initComponents();
         String currentDirectory = System.getProperty("user.dir");
         String filename = "words.txt";
         String filePath = currentDirectory + "/" + filename;
-        //wm = new WordManager(filePath);
-        //word = wm.getWord();        
+        wm = new WordManager(filePath);
+        word = wm.getWord();
+        input.setEditable(false);
+        output.setEditable(false);
     }
     
     public void draw (){
         Graphics g = drawing.getGraphics();
-        g.setColor(Color.RED);
-        g.fillRect(0,0,drawing.getWidth(), drawing.getHeight());
-        
-        g.setColor(Color.GREEN);
-        g.fillOval(100,100,90,30);
-        g.drawLine(90,150,90,150);
+        g.setColor(Color.BLACK);
+        ///g.fillRect(0,0,drawing.getWidth(), drawing.getHeight());
+        g.drawLine(120,30,120,90);
+        g.drawLine(120,30,180,30);
+        if (guessCount == 1){
+            g.fillOval(170,30,30,30);
+        }
+        if (guessCount == 2){
+            g.drawLine(170,30,180,90);
+        }
     }
 
     /**
@@ -43,10 +57,12 @@ public class wordGame extends javax.swing.JFrame {
 
         input = new javax.swing.JTextField();
         output = new javax.swing.JTextField();
-        warnings = new javax.swing.JTextField();
         drawing = new javax.swing.JPanel();
         counter = new javax.swing.JLabel();
         reset = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        warning = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         Options = new javax.swing.JMenu();
         startGame = new javax.swing.JMenuItem();
@@ -70,24 +86,18 @@ public class wordGame extends javax.swing.JFrame {
             }
         });
 
-        warnings.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                warningsActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout drawingLayout = new javax.swing.GroupLayout(drawing);
         drawing.setLayout(drawingLayout);
         drawingLayout.setHorizontalGroup(
             drawingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 228, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
         drawingLayout.setVerticalGroup(
             drawingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 178, Short.MAX_VALUE)
+            .addGap(0, 194, Short.MAX_VALUE)
         );
 
-        counter.setText("Click start a game");
+        counter.setText("Click start a game!");
 
         reset.setText("Reset game!");
         reset.addActionListener(new java.awt.event.ActionListener() {
@@ -95,6 +105,10 @@ public class wordGame extends javax.swing.JFrame {
                 resetActionPerformed(evt);
             }
         });
+
+        jLabel1.setText("Input here:");
+
+        jLabel2.setText("Note: You can only guess one letter & lower case only");
 
         Options.setText("Options");
 
@@ -115,23 +129,23 @@ public class wordGame extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(23, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(reset)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(layout.createSequentialGroup()
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(output, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(input, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGap(23, 23, 23))
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                    .addComponent(counter, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
-                            .addComponent(drawing, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(warnings)))
-                .addContainerGap(11, Short.MAX_VALUE))
+                    .addComponent(warning, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(output, javax.swing.GroupLayout.PREFERRED_SIZE, 115, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(counter, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jLabel1)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(input, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(reset))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(drawing, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -141,16 +155,20 @@ public class wordGame extends javax.swing.JFrame {
                         .addGap(52, 52, 52)
                         .addComponent(counter)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(input, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(28, 28, 28)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(input, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1))
+                        .addGap(27, 27, 27)
                         .addComponent(output, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(16, 16, 16)
                         .addComponent(drawing, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addGap(18, 18, 18)
-                .addComponent(warnings, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(reset)
+                .addComponent(warning)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(reset)
+                    .addComponent(jLabel2))
                 .addContainerGap())
         );
 
@@ -163,39 +181,51 @@ public class wordGame extends javax.swing.JFrame {
             if (guess.equals(word.substring(i,i+1))){
                 hidden = hidden.substring(0,i) + guess + hidden.substring(i+1);
                 output.setText(hidden);
-                correctGuesses++;
-                counter.setText("Correct Counter: " + correctGuesses);
-                int temp = correctGuesses;
-                if (hidden.equals(word))
-                    warnings.setText("You got it!");
-            }
+            }       
+            if (hidden.equals(word)){
+                warning.setText("You got it!");
+                return; //prevents latter code from running (stops guesscount from going up after round is complete)
+            }      
         }
-        
+        if (!word.contains(guess)){
+            guessCount++;
+            draw();
+            counter.setText("Wrong guesses: " + guessCount);
+        } 
     }//GEN-LAST:event_inputActionPerformed
 
     private void outputActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_outputActionPerformed
         // TODO add your handling code here:
-
     }//GEN-LAST:event_outputActionPerformed
-
-    private void warningsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_warningsActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_warningsActionPerformed
 
     private void startGameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startGameActionPerformed
         // TODO add your handling code here:
-        int hiddenCounter = 0;
+        //int hiddenCounter = 0;
+        input.setEditable(true);
         for (int i = 0; i < word.length(); i++)
             hidden = hidden + "_";
         output.setText(hidden);
-        warnings.setText("");
+        warning.setText("");
+        counter.setText("Wrong guesses:");
         draw();
-        counter.setText("Correct Counter:");
     }//GEN-LAST:event_startGameActionPerformed
 
+    //for starting a second+ game
     private void resetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetActionPerformed
         // TODO add your handling code here:
+        guessCount = 0;
+        String currentDirectory = System.getProperty("user.dir");
+        String filename = "words.txt";
+        String filePath = currentDirectory + "/" + filename;
+        wm = new WordManager(filePath);
+        word = wm.getWord();
+        hidden = "";
+        for (int i = 0; i < word.length(); i++)
+            hidden = hidden + "_";
         output.setText(hidden);
+        warning.setText("");
+        counter.setText("Wrong guesses: ");
+        draw();
     }//GEN-LAST:event_resetActionPerformed
 
     private void inputKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_inputKeyTyped
@@ -243,10 +273,12 @@ public class wordGame extends javax.swing.JFrame {
     private javax.swing.JLabel counter;
     private javax.swing.JPanel drawing;
     private javax.swing.JTextField input;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JTextField output;
     private javax.swing.JButton reset;
     private javax.swing.JMenuItem startGame;
-    private javax.swing.JTextField warnings;
+    private javax.swing.JLabel warning;
     // End of variables declaration//GEN-END:variables
 }

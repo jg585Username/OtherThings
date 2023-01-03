@@ -9,9 +9,13 @@ public class WordManager {
     // list of used words
     private ArrayList<String> usedWordList = new ArrayList<String>();
 
-    
+    /*
     public WordManager(){
         loadWords();
+    }
+    */
+    public WordManager(String filepath){
+        wordList = FileReaderPlus.readFile(filepath,true);
     }
     
     public String getWord(){
@@ -19,7 +23,7 @@ public class WordManager {
         String check = wordList.get(index);
         usedWordList.add(check);
         wordList.remove(index);
-        if (wordList.size() == 0)
+        if (wordList.isEmpty())
             reset();
         
         return check;
@@ -33,7 +37,7 @@ public class WordManager {
         }
         usedWordList.clear();
     }
-    
+    /*
     public void loadWords(){
         //add 4 words to the word list
             wordList.add("Cyrus");
@@ -42,5 +46,5 @@ public class WordManager {
             wordList.add("horse");
         
     }
-    
+    */
 }
