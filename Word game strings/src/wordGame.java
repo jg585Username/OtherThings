@@ -30,19 +30,34 @@ public class wordGame extends javax.swing.JFrame {
         word = wm.getWord();
         input.setEditable(false);
         output.setEditable(false);
+        reset.setEnabled(false);
     }
     
     public void draw (){
         Graphics g = drawing.getGraphics();
         g.setColor(Color.BLACK);
         ///g.fillRect(0,0,drawing.getWidth(), drawing.getHeight());
-        g.drawLine(120,30,120,90);
+        g.drawLine(120,30,120,150);
         g.drawLine(120,30,180,30);
+        g.drawLine(80,150,160,150);
         if (guessCount == 1){
             g.fillOval(170,30,30,30);
         }
         if (guessCount == 2){
-            g.drawLine(170,30,180,90);
+            g.drawLine(185,30,185,110);
+        }
+        if (guessCount == 3){
+            g.drawLine(155, 80, 185, 60);
+        }
+        if (guessCount == 4){
+            g.drawLine(185, 60, 215, 80);
+        }
+        if (guessCount == 5){
+            g.drawLine(165,130,185,110);
+        }
+        if (guessCount == 6){
+            g.drawLine(185,110,205,130);
+            warning.setText("Hangstick! You lose");
         }
     }
 
@@ -189,8 +204,8 @@ public class wordGame extends javax.swing.JFrame {
         }
         if (!word.contains(guess)){
             guessCount++;
-            draw();
             counter.setText("Wrong guesses: " + guessCount);
+            draw();
         } 
     }//GEN-LAST:event_inputActionPerformed
 
@@ -201,6 +216,8 @@ public class wordGame extends javax.swing.JFrame {
     private void startGameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_startGameActionPerformed
         // TODO add your handling code here:
         //int hiddenCounter = 0;
+        startGame.setEnabled(false);
+        reset.setEnabled(true);
         input.setEditable(true);
         for (int i = 0; i < word.length(); i++)
             hidden = hidden + "_";
@@ -220,12 +237,7 @@ public class wordGame extends javax.swing.JFrame {
         wm = new WordManager(filePath);
         word = wm.getWord();
         hidden = "";
-        for (int i = 0; i < word.length(); i++)
-            hidden = hidden + "_";
-        output.setText(hidden);
-        warning.setText("");
-        counter.setText("Wrong guesses: ");
-        draw();
+        startGameActionPerformed(null); //or paste method code works too
     }//GEN-LAST:event_resetActionPerformed
 
     private void inputKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_inputKeyTyped
