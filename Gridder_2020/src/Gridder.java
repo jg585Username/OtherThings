@@ -721,9 +721,12 @@ public class Gridder extends javax.swing.JFrame
     private void button3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button3ActionPerformed
         // TODO add your handling code here:
         clearGrid();
+        int temp = grid.length - 1;
         for (int i = 0; i < grid.length/2; i++){
-            
+            grid [i][temp - i] = 1;
+ 
         }
+        draw();
         
     }//GEN-LAST:event_button3ActionPerformed
 
